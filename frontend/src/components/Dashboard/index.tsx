@@ -24,11 +24,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className={styles["dashboard-container"]}>
-      <div className={styles["middle-container"]}>
-        <Search />
-        <Tasklist />
+      <div className={styles["content-container"]}>
+        <div className={styles["search-container"]}> <Search /></div>
+        <div className={styles["result-container"]}> <Tasklist /></div>
       </div>
-
     </div>
   );
 };
