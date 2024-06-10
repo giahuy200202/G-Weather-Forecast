@@ -1,0 +1,16 @@
+.nav-container{
+    height: 7.5rem;
+    background: #4263eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 10rem;
+}
+
+.nav-container > h1 {
+    color: white;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
