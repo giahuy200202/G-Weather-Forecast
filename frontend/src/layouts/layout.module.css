@@ -1,5 +1,6 @@
 .base-layout-container{
     display: flex;
+    background: #edf2ff;
 }
 
 .content-container{

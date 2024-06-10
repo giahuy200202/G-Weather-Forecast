@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./dashboard.module.css";
 
-import Search from "./search";
-import Tasklist from "./result";
+import Search from "../../components/Dashboard/Search/index";
+import Tasklist from "../../components/Dashboard/Result/index";
 import { useAppDispatch, useAppSelector } from "@hooks/ReduxHooks";
 import { useEffect } from "react";
 import axios from "axios";

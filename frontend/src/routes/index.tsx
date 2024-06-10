@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import BaseLayout from "@layouts/index";
-import Dashboard from "@components/Dashboard";
+import Dashboard from "@pages/Dashboard";
 
 
 const AppRoutes: React.FC = () => {

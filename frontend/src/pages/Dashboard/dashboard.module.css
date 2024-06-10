@@ -8,41 +8,39 @@
     width: 70%;
     height: 70rem;
     margin: 6rem auto;
-    background: yellow;
 }
 
 .dashboard-container > .content-container > .search-container{
-    width: 34%;
-    background: red;
+    width: 32%;
+    background: #edf2ff;
 }
 
 .dashboard-container > .content-container > .result-container{
-    width: 61%;
-    background: blue;
+    width: 63%;
+    background: yellow;
 }
 
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
     .dashboard-container > .content-container{
         display: flex;
         flex-direction: column;
         width: 90%;
-        height: 70rem;
+        height: 105rem;
         margin: 4rem auto;
-        background: yellow;
     }
     
     .dashboard-container > .content-container > .search-container{
         height: 30%;
         width: 100%;
-        background: red;
+        background: #edf2ff;
     }
     
     .dashboard-container > .content-container > .result-container{
         margin-top: 4rem;
         height: 65%;
         width: 100%;
-        background: blue;
+        background: yellow;
     }
     
   }
