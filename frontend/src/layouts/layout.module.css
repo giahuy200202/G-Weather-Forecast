@@ -1,6 +1,7 @@
 .base-layout-container{
     display: flex;
     background: #edf2ff;
+    min-height: 100vh;
 }
 
 .content-container{

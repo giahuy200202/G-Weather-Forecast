@@ -12,7 +12,7 @@
 
 .search-container>.search-header>h2 {
     color: rgb(16, 32, 112);
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 0;
 }
 
@@ -27,7 +27,7 @@
 .search-container>input {
     width: 100%;
     padding: 1.2rem 1.5rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     border-radius: 0.5rem;
     border: 0.18rem solid #ced4da;
 }
@@ -43,7 +43,7 @@
 .search-container>.btn-search {
     background: #4263eb;
     color: white;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
 }
 
 .search-container>.btn-search:hover {
@@ -55,6 +55,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 2rem 0;
 }
 
 .search-container>.or-container>.line {

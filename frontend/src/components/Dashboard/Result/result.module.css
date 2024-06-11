@@ -1,0 +1,39 @@
+.result-container>.banner-container {
+    width: 100%;
+    background: #4263eb;
+    color: white;
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0.9rem;
+}
+
+.result-container>.banner-container>div>h1 {
+    font-size: 2.2rem;
+}
+
+.result-container>.banner-container>div>p {
+    font-weight: 300;
+    margin: 1.5rem 0 1rem 0;
+}
+
+.result-container>.banner-container>.condition-container {
+    width: 13rem;
+    padding-right: 3rem;
+    margin: auto 0;
+}
+
+.result-container>.banner-container>.condition-container>img {
+    width: 100%;
+}
+
+.result-container>.banner-container>.condition-container>p {
+    margin: 0;
+    text-align: center;
+}
+
+.result-container>h1{
+    font-size: 2.5rem;
+    color: rgb(16, 32, 112);
+    margin: 3.5rem 0;
+}
