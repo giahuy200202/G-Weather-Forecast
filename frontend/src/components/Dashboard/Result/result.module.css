@@ -8,18 +8,23 @@
     border-radius: 0.9rem;
 }
 
-.result-container>.banner-container>div>h1 {
+.result-container>.banner-container>.title-container>.title-banner{
+    display: flex;
+    gap: 1rem;
+}
+
+.result-container>.banner-container>.title-container>.title-banner>h1 {
     font-size: 2.2rem;
 }
 
-.result-container>.banner-container>div>p {
+.result-container>.banner-container>.title-container>p {
     font-weight: 300;
     margin: 1.5rem 0 1rem 0;
 }
 
 .result-container>.banner-container>.condition-container {
     width: 13rem;
-    padding-right: 3rem;
+    padding-right: 1rem;
     margin: auto 0;
 }
 
@@ -32,8 +37,76 @@
     text-align: center;
 }
 
-.result-container>h1{
+.result-container>h1 {
     font-size: 2.5rem;
     color: rgb(16, 32, 112);
-    margin: 3.5rem 0;
+    margin: 3rem 0;
 }
+
+.four-day-weather-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0.9rem;
+}
+
+.each-day-weather {
+    margin-right: 2rem;
+    background: #edf2ff;
+    padding: 2rem;
+    border: 0.1rem solid rgb(16, 32, 112);
+    border-radius: 0.8rem;
+}
+
+.each-day-weather>h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+}
+
+.each-day-weather>img {
+    margin-bottom: 2.5rem;
+    width: 7rem;
+}
+
+.each-day-weather>p {
+    margin-bottom: 1.5rem;
+}
+
+@media only screen and (max-width: 900px) {
+    .result-container>.banner-container>.title-container>.title-banner{
+        display: block;
+    }
+    .result-container>.banner-container>.condition-container {
+        width: 10rem;
+        margin: auto 0;
+    }
+    .result-container>.banner-container>.title-container>.title-banner>h1 {
+        font-size: 2rem;
+    }
+    .each-day-weather>h3 {
+        font-size: 1.6rem;
+        margin-bottom: 2.5rem;
+    }
+    .each-day-weather>p {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .result-container>.banner-container>.title-container>p {
+        font-weight: 300;
+        margin: 1.5rem 0 1rem 0;
+        font-size: 1.5rem;
+    }
+    .result-container>.banner-container {
+        padding: 2rem 3rem;
+    }
+    .result-container>h1 {
+        font-size: 2rem;
+        margin: 2.5rem 0;
+    }
+  }
+
+  @media only screen and (max-width: 1030px) {
+    .result-container>.banner-container>.title-container>.title-banner{
+        display: block;
+    }
+  }
