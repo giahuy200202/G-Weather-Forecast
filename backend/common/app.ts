@@ -19,11 +19,11 @@ import AppError from './services/errors/app.error'
 import credentials from './middlewares/credential.middleware'
 import Logger from './utils/logger'
 
+
 type MongoConnection = {
     uri: string
     options?: mongoose.ConnectOptions
 }
-
 
 type ApplicationOptions = {
     controllers: IController[]
@@ -73,7 +73,7 @@ class Application {
 
         this.app.use(credentials)
         this.app.use(cors(CorsCustomOptions))
- 
+
         this.app.use(express.json({ limit: '50mb' }))
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(cookieParser())
@@ -161,6 +161,7 @@ class Application {
                         `Server is running on port ${chalk.cyan(availablePort)}`
                     )
                 )
+
                 callback()
             }
         )
