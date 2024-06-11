@@ -3,6 +3,7 @@ import styles from "./result.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/ReduxHooks";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import Modal from 'react-modal';
 
 import BeatLoader from "react-spinners/BeatLoader";
 import toast, { Toaster } from "react-hot-toast";
@@ -46,6 +47,7 @@ const Result: React.FC = () => {
     }
   };
 
+
   return (
     <div className={styles["result-container"]}>
       <div className={styles["banner-container"]}>
@@ -65,9 +67,7 @@ const Result: React.FC = () => {
       </div>
       <h1>4-Day Forecast</h1>
 
-
       <Carousel responsive={responsive} >
-
         <div className={styles["each-day-weather"]}>
           <h3>2023-06-19</h3>
           <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
@@ -127,7 +127,6 @@ const Result: React.FC = () => {
         </div>
 
       </Carousel>
-
 
     </div>
   );
