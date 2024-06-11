@@ -2,21 +2,22 @@ import React from "react";
 import styles from "./dashboard.module.css";
 
 import Search from "../../components/Dashboard/Search/index";
-import Tasklist from "../../components/Dashboard/Result/index";
-import { useAppDispatch, useAppSelector } from "@hooks/ReduxHooks";
+import Result from "../../components/Dashboard/Result/index";
+import { useAppDispatch } from "@hooks/ReduxHooks";
 import { useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { dashboardActions } from "@store/dashboard";
+import { Toaster } from 'react-hot-toast';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
+    dispatch(dashboardActions.updateIsLoading(true));
     axios
       .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {})
       .then((res) => {
-        console.log(res.data);
-        // dispatch(dashboardActions.updateRevenue(getRevenue));
+        dispatch(dashboardActions.updateWeather(res.data.data));
+        dispatch(dashboardActions.updateIsLoading(false));
       })
       .catch((err) => {
         console.log(err);
@@ -24,12 +25,15 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles["dashboard-container"]}>
-      <div className={styles["content-container"]}>
-        <div className={styles["search-container"]}> <Search /></div>
-        <div className={styles["result-container"]}> <Tasklist /></div>
+    <React.Fragment>
+      <div className={styles["dashboard-container"]}>
+        <div className={styles["content-container"]}>
+          <div className={styles["search-container"]}> <Search /></div>
+          <div className={styles["result-container"]}> <Result /></div>
+        </div>
       </div>
-    </div>
+      <Toaster position="top-right" />
+    </React.Fragment>
   );
 };
 

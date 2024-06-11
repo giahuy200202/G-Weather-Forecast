@@ -1,16 +1,17 @@
 import React from "react";
 import styles from "./search.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/ReduxHooks";
-import BeatLoader from "react-spinners/BeatLoader";
 import toast, { Toaster } from "react-hot-toast";
-import { ReactComponent as EmailIcon } from "../../../assets/svg/email.svg";
+import axios from "axios";
 
 import { dashboardActions } from "@store/dashboard";
 import { useState } from "react";
 
 import Modal from "react-bootstrap/Modal";
-import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import { styleError, styleSuccess } from "../../../helpers/toastStyle";
+
 
 const Search: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -29,8 +30,6 @@ const Search: React.FC = () => {
       transform: 'translate(-50%, -50%)',
     },
   };
-
-  // const chartData = useAppSelector((state) => state.dashboard.chartData);
 
   function openModal() {
     setIsOpen(true);
@@ -51,8 +50,23 @@ const Search: React.FC = () => {
     }
   }
   const handleSubmitSearch = () => {
-    console.log(search);
-    
+    dispatch(dashboardActions.updateIsLoading(true));
+    axios
+      .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
+        location: search
+      })
+      .then((res) => {
+        if (!res.data.success) {
+          toast.error(res.data.message, styleError);
+        }
+        else {
+          dispatch(dashboardActions.updateWeather(res.data.data));
+        }
+        dispatch(dashboardActions.updateIsLoading(false));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const handleLocationChange = (event: any) => {
@@ -67,8 +81,25 @@ const Search: React.FC = () => {
     }
   }
   const handleSubmitModal = () => {
-    console.log(location);
-    console.log(email);
+    dispatch(dashboardActions.updateIsLoading(true));
+    axios
+      .post(`${process.env.REACT_APP_API_URI}/v1/weather/subscribe`, {
+        email: email,
+        location: location
+      })
+      .then((res) => {
+        if (!res.data.success) {
+          toast.error(res.data.message, styleError);
+        }
+        else {
+          closeModal();
+          toast.success('You subscribed successfully', styleSuccess);
+        }
+        dispatch(dashboardActions.updateIsLoading(false));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -95,16 +126,16 @@ const Search: React.FC = () => {
           <div className={styles["padding-modal"]}>
             <p className={styles["content-modal"]}>Please enter your information so we can send you daily weather updates that match your location and preferences</p>
             <p className={`${styles["content-modal"]} ${styles["more-vertical-space"]}`}>Email</p>
-            <input className={styles["input-modal"]} onKeyDown={handleModalKeyEnter} onChange={handleLocationChange} type="text" placeholder="Enter your email" />
+            <input className={styles["input-modal"]} onKeyDown={handleModalKeyEnter} onChange={handleEmailChange} type="text" placeholder="Enter your email" />
             <p className={`${styles["content-modal"]} ${styles["more-vertical-space"]}`}>Location</p>
-            <input className={`${styles["input-modal"]} ${styles["more-vertical-input-space"]}`} onKeyDown={handleModalKeyEnter} onChange={handleEmailChange} type="text" placeholder="Enter your location" />
+            <input className={`${styles["input-modal"]} ${styles["more-vertical-input-space"]}`} onKeyDown={handleModalKeyEnter} onChange={handleLocationChange} type="text" placeholder="Enter your location" />
           </div>
         </Modal.Body>
         <Modal.Footer>
-        <div className={styles["padding-modal"]}>
-          <button onClick={closeModal} className={styles["btn-cancel"]}>Cancel</button>
-          <button onClick={handleSubmitModal} className={styles["btn-submit"]}>Submit</button>
-        </div>
+          <div className={styles["padding-modal"]}>
+            <button onClick={closeModal} className={styles["btn-cancel"]}>Cancel</button>
+            <button onClick={handleSubmitModal} className={styles["btn-submit"]}>Submit</button>
+          </div>
         </Modal.Footer>
       </Modal>
     </div>

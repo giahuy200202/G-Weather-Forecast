@@ -1,3 +1,3 @@
-const allowedOrigins: string | string[] = [process.env.CLIENT_ORIGIN_URL!]
+const allowedOrigins: string | string[] = []
 
 export default allowedOrigins

@@ -3,18 +3,15 @@ import styles from "./result.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/ReduxHooks";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import Modal from 'react-modal';
-
 import BeatLoader from "react-spinners/BeatLoader";
-import toast, { Toaster } from "react-hot-toast";
-import { ReactComponent as EmailIcon } from "../../../assets/svg/email.svg";
-
-import { dashboardActions } from "@store/dashboard";
-import { useState } from "react";
 
 
 const Result: React.FC = () => {
-  const dispatch = useAppDispatch();
+
+  const weatherData = useAppSelector((state) => state.dashboard.weather);
+  const currentWeather = useAppSelector((state) => state.dashboard.currentWeather);
+  const isLoading = useAppSelector((state) => state.dashboard.isLoading);
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -49,86 +46,45 @@ const Result: React.FC = () => {
 
 
   return (
-    <div className={styles["result-container"]}>
-      <div className={styles["banner-container"]}>
-        <div className={styles["title-container"]}>
-          <div className={styles["title-banner"]}>
-            <h1>London </h1>
-            <h1>(2023-06-19)</h1>
+    isLoading ? <div className={styles["center-loader"]}>
+      <BeatLoader
+        color="#4263eb"
+        margin={2}
+        size={15}
+        speedMultiplier={0.5}
+      />
+    </div> :
+      <div className={styles["result-container"]}>
+        <div className={styles["banner-container"]}>
+          <div className={styles["title-container"]}>
+            <div className={styles["title-banner"]}>
+              <h1>{currentWeather.location}</h1>
+              <h1>({currentWeather.date})</h1>
+            </div>
+            <p>Temparature: {currentWeather.temperature} °C</p>
+            <p>Wind: {currentWeather.wind} M/S</p>
+            <p>Humidity: {currentWeather.humidity} %</p>
           </div>
-          <p>Temparature: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
+          <div className={styles["condition-container"]}>
+            <img src={`https:${currentWeather.imgCondition}`} alt="weather icon" />
+            <p>{currentWeather.textCondition}</p>
+          </div>
         </div>
-        <div className={styles["condition-container"]}>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Party cloudy</p>
-        </div>
+        <h1>4-Day Forecast</h1>
+
+        <Carousel responsive={responsive} >
+          {weatherData.map((weather, index) => (
+            <div key={index} className={styles["each-day-weather"]}>
+              <h3>{weather.date}</h3>
+              <img src={`https:${weather.imgCondition}`} alt="weather icon" />
+              <p>Temp: {weather.temperature} °C</p>
+              <p>Wind: {weather.wind} M/S</p>
+              <p>Humidity: {weather.humidity} %</p>
+            </div>
+          ))}
+        </Carousel>
+
       </div>
-      <h1>4-Day Forecast</h1>
-
-      <Carousel responsive={responsive} >
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-        <div className={styles["each-day-weather"]}>
-          <h3>2023-06-19</h3>
-          <img src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="weather icon" />
-          <p>Temp: 18.17 °C</p>
-          <p>Wind: 18.17 M/S</p>
-          <p>Humidity: 76 %</p>
-        </div>
-
-      </Carousel>
-
-    </div>
   );
 };
 

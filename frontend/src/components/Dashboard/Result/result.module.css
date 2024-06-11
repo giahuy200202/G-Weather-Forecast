@@ -1,3 +1,10 @@
+.center-loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30%;
+}
+
 .result-container>.banner-container {
     width: 100%;
     background: #4263eb;
@@ -40,7 +47,7 @@
 .result-container>h1 {
     font-size: 2.5rem;
     color: rgb(16, 32, 112);
-    margin: 3rem 0;
+    margin: 4rem 0 2rem 0;
 }
 
 .four-day-weather-container {

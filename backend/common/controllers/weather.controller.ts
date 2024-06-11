@@ -52,7 +52,7 @@ class WeatherController implements IController {
             try {
                 const response = await fetch(weatherURL)
                 const weatherData = await response.json()
-                console.log(weatherData);
+
                 if('error' in weatherData){
                     return res.status(200).json({
                         success: false,
