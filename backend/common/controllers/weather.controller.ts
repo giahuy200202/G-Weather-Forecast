@@ -3,11 +3,10 @@ import { NextFunction, Request, Response, Router } from 'express'
 import IController from '../interfaces/controller'
 import catchAsync from '../utils/catch.error'
 import fetch from 'node-fetch'
-import IWeather from 'common/dummy_data/interface'
+import IWeather from 'common/interfaces/weather'
 import GMailer from '../services/mailer.builder'
 import Information from '../models/information.model'
 import fs from 'fs'
-import schedule from 'node-schedule'
 import cron from 'node-cron'
 
 // const serviceApprovalData = DummyData.serviceApprovals
@@ -35,8 +34,6 @@ class WeatherController implements IController {
             .replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '')
             .toLowerCase()
 
-        console.log('Before schedule')
-
         if (fs.existsSync(`../backend/common/dummy_data/${pathname}.json`)) {
             fs.readFile(
                 `../backend/common/dummy_data/${pathname}.json`,
@@ -60,41 +57,50 @@ class WeatherController implements IController {
             try {
                 const response = await fetch(weatherURL)
                 const weatherData = await response.json()
-                const weatherArray: IWeather[] = []
-                for (const weather of weatherData.forecast.forecastday) {
-                    weatherArray.push({
-                        location: weatherData.location.name,
-                        date: weather.date,
-                        temperature: weather.day.maxtemp_c
-                            ? weather.day.maxtemp_c.toString()
-                            : '',
-                        wind: weather.day.maxwind_kph
-                            ? (
-                                  Math.floor(
-                                      (weather.day.maxwind_kph / 3.6) * 100
-                                  ) / 100
-                              ).toString()
-                            : '',
-                        humidity: weather.day.avghumidity
-                            ? weather.day.avghumidity.toString()
-                            : '',
-                        imgCondition: weather.day.condition.icon ?? '',
-                        textCondition: weather.day.condition.text ?? '',
+                console.log(weatherData);
+                if('error' in weatherData){
+                    return res.status(200).json({
+                        success: false,
+                        message: weatherData.error.message,
                     })
                 }
-
-                const json = JSON.stringify(weatherArray)
-                fs.writeFile(
-                    `../backend/common/dummy_data/${pathname}.json`,
-                    json,
-                    'utf8',
-                    () => {
-                        return res.status(200).json({
-                            success: true,
-                            data: weatherArray,
+                else{
+                    const weatherArray: IWeather[] = []
+                    for (const weather of weatherData.forecast.forecastday) {
+                        weatherArray.push({
+                            location: weatherData.location.name,
+                            date: weather.date,
+                            temperature: weather.day.maxtemp_c
+                                ? weather.day.maxtemp_c.toString()
+                                : '',
+                            wind: weather.day.maxwind_kph
+                                ? (
+                                      Math.floor(
+                                          (weather.day.maxwind_kph / 3.6) * 100
+                                      ) / 100
+                                  ).toString()
+                                : '',
+                            humidity: weather.day.avghumidity
+                                ? weather.day.avghumidity.toString()
+                                : '',
+                            imgCondition: weather.day.condition.icon ?? '',
+                            textCondition: weather.day.condition.text ?? '',
                         })
                     }
-                )
+    
+                    const json = JSON.stringify(weatherArray)
+                    fs.writeFile(
+                        `../backend/common/dummy_data/${pathname}.json`,
+                        json,
+                        'utf8',
+                        () => {
+                            return res.status(200).json({
+                                success: true,
+                                data: weatherArray,
+                            })
+                        }
+                    )
+                }
             } catch (error) {
                 console.log('Error fetching weather data:', error)
                 throw error
