@@ -52,6 +52,7 @@ const Search: React.FC = () => {
   }
   const handleSubmitSearch = () => {
     console.log(search);
+    
   }
 
   const handleLocationChange = (event: any) => {

@@ -3,6 +3,11 @@
     "version": "1.0.0",
     "description": "",
     "main": "common/app.ts",
+    "nodemonConfig": {
+        "ignore": [
+            "*.json"
+        ]
+    },
     "scripts": {
         "start:dev": "nodemon server.ts",
         "start": "node dist/app/server.js",

@@ -11,16 +11,17 @@ import { useNavigate } from "react-router-dom";
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_URI}/dashboard`)
-  //     .then((res) => {
-  //       // dispatch(dashboardActions.updateRevenue(getRevenue));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {})
+      .then((res) => {
+        console.log(res.data);
+        // dispatch(dashboardActions.updateRevenue(getRevenue));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className={styles["dashboard-container"]}>

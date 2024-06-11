@@ -1,24 +1,30 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-
+interface IWeather {
+  location: string
+  date: string
+  temperature: string
+  wind: string
+  humidity: string
+  imgCondition: string
+  textCondition: string
+}
 
 interface InitialDashboardState {
-  data: [];
+  weather: IWeather[]
 }
 
 const initialDashboardState: InitialDashboardState = {
-  data: [],
-
+  weather: [],
 };
 
 const dashboardSlice = createSlice({
   name: "dashboard",
   initialState: initialDashboardState,
   reducers: {
-    // updateRevenue(state, action: PayloadAction<number[]>){
-    //   state.chartData.yLabels = [...action.payload];
-    //   state.isDoneChartData = true;
-    // }
+    updateWeather(state, action: PayloadAction<IWeather[]>){
+      state.weather = [...action.payload];
+    }
   },
 });
 

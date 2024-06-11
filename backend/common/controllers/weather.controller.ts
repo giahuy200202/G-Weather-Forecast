@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import { NextFunction, Request, Response, Router } from 'express'
 import IController from '../interfaces/controller'
 import catchAsync from '../utils/catch.error'
@@ -25,10 +24,7 @@ class WeatherController implements IController {
         res: Response,
         next: NextFunction
     ) {
-        // await Information.create({
-        //     email: 'giahuy200204@gmail.com',
-        //     location: 'ho chi minh',
-        // })
+
         const location = req.body.location ?? 'ho chi minh'
         const pathname = location
             .replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '')
@@ -51,7 +47,6 @@ class WeatherController implements IController {
                 }
             )
 
-            // fs.unlinkSync(`../backend/common/dummy_data/${pathname}.json`);
         } else {
             const weatherURL = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.API_KEY}&q=${location}&days=14&aqi=no&alerts=no`
             try {
@@ -153,7 +148,7 @@ class WeatherController implements IController {
                 to: email,
                 subject: 'Weather Information',
                 html: `
-                    <h4>Thank you for subscribing to the weather forecast service. The forecast will be sent at 6:00 a.m. every day. Wish you a great day ahead!</h4> 
+                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent at 6:00 a.m. every day. Wish you a great day ahead!</p> 
                 `,
             })
 
