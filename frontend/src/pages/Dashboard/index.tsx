@@ -14,21 +14,22 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     dispatch(dashboardActions.updateIsLoading(true));
     navigator.geolocation.getCurrentPosition((position) => {
-      const weatherData = localStorage.getItem(`${position.coords.latitude},${position.coords.longitude}`);
+      const currentLocation: string = `${position.coords.latitude},${position.coords.longitude}`
+      const weatherData = localStorage.getItem(currentLocation);
       if (weatherData !== null) {
         dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
         dispatch(dashboardActions.updateIsLoading(false));
         }
         else {
           axios
-          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {location: `${position.coords.latitude},${position.coords.longitude}`})
+          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {location: currentLocation})
           .then((res) => {
             dispatch(dashboardActions.updateWeather(res.data.data));
-            localStorage.setItem(`${position.coords.latitude},${position.coords.longitude}`, JSON.stringify(res.data.data));
+            localStorage.setItem(currentLocation, JSON.stringify(res.data.data));
             setTimeout(
               () => {
-                if (localStorage.getItem(`${position.coords.latitude},${position.coords.longitude}`) !== null) {
-                  localStorage.removeItem(`${position.coords.latitude},${position.coords.longitude}`)
+                if (localStorage.getItem(currentLocation) !== null) {
+                  localStorage.removeItem(currentLocation)
                 }
               },
               14400000
