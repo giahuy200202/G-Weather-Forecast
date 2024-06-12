@@ -18,10 +18,10 @@ const Dashboard: React.FC = () => {
       if (weatherData !== null) {
         dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
         dispatch(dashboardActions.updateIsLoading(false));
-      }
-      else {
-        axios
-          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {})
+        }
+        else {
+          axios
+          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {location: `${position.coords.latitude},${position.coords.longitude}`})
           .then((res) => {
             dispatch(dashboardActions.updateWeather(res.data.data));
             localStorage.setItem(`${position.coords.latitude},${position.coords.longitude}`, JSON.stringify(res.data.data));
