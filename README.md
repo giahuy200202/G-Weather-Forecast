@@ -101,7 +101,7 @@ npm run start:dev
 ```
 ## DEMO
 
-- Onedrive: https://ynh33-my.sharepoint.com/:f:/g/personal/giahuy200202_ynh33_onmicrosoft_com/EigEzza3g49Aiq9or04v5LUBZ5Mzcb93jtmSdjwomKGVUg?e=umgdwC
+- Onedrive: https://ynh33-my.sharepoint.com/:f:/g/personal/giahuy200202_ynh33_onmicrosoft_com/EuiL2h-GkVVCmiWTGEqQEnkB_1AOCcv42ChNR1FzDs9Dwg?e=LJFHZr
 
 ## REFERENCES
 
