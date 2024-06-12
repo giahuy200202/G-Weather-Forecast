@@ -5,7 +5,7 @@ import path from 'path'
 export default async () => {
     const directory = '../backend/common/dummy_data'
     
-    //delete temporary file every 3 hours for testing
+    //delete temporary file every 2 hours for testing
     cron.schedule('*/7200 * * * * *', () => {
         fs.readdir(directory, (err, files) => {
             if (err) throw err;
