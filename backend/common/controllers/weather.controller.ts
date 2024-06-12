@@ -148,7 +148,7 @@ class WeatherController implements IController {
                 to: email,
                 subject: 'Weather Information',
                 html: `
-                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent at 7:00 a.m. every day. Wish you a great day ahead!</p> 
+                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent every day. Wish you a great day ahead!</p> 
                 `,
             })
 
@@ -176,7 +176,6 @@ class WeatherController implements IController {
                 textCondition: assignWeather.day.condition.text ?? '',
             }
 
-            //00:00 utc is 07:00 VN
             cron.schedule('0 0 * * *', () => {
                 GMailer.sendMail({
                     to: email,
