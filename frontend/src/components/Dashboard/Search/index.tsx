@@ -62,6 +62,7 @@ const Search: React.FC = () => {
           .then((res) => {
             if (!res.data.success) {
               toast.error(res.data.message, styleError);
+              dispatch(dashboardActions.updateIsLoading(false));
             }
             else {
               dispatch(dashboardActions.updateWeather(res.data.data));
