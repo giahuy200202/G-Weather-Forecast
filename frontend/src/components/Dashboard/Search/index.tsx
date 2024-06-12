@@ -42,22 +42,38 @@ const Search: React.FC = () => {
   }
   const handleSubmitSearch = () => {
     dispatch(dashboardActions.updateIsLoading(true));
-    axios
-      .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
-        location: search
-      })
-      .then((res) => {
-        if (!res.data.success) {
-          toast.error(res.data.message, styleError);
-        }
-        else {
-          dispatch(dashboardActions.updateWeather(res.data.data));
-        }
-        dispatch(dashboardActions.updateIsLoading(false));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const weatherData = localStorage.getItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase());
+    if (weatherData !== null) {
+      dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
+      dispatch(dashboardActions.updateIsLoading(false));
+    }
+    else {
+      axios
+        .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
+          location: search
+        })
+        .then((res) => {
+          if (!res.data.success) {
+            toast.error(res.data.message, styleError);
+          }
+          else {
+            dispatch(dashboardActions.updateWeather(res.data.data));
+            localStorage.setItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase(), JSON.stringify(res.data.data));
+            setTimeout(
+              () => {
+                if (localStorage.getItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase()) !== null) {
+                  localStorage.removeItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase())
+                }
+              },
+              14400000
+            );
+          }
+          dispatch(dashboardActions.updateIsLoading(false));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   const handleLocationChange = (event: any) => {
@@ -105,7 +121,7 @@ const Search: React.FC = () => {
         <p>or</p>
         <div className={styles["line"]}></div>
       </div>
-      <button onClick={()=>{setSearch('ho chi minh'); handleSubmitSearch();}}className={styles["btn-current-location"]}>Use current location</button>
+      <button onClick={() => { setSearch('ho chi minh'); handleSubmitSearch(); }} className={styles["btn-current-location"]}>Use current location</button>
       <button onClick={openModal} className={`${styles["btn-current-location"]} ${styles["btn-more-margin"]}`}>Receive daily forecast via email</button>
       <Modal show={modalIsOpen} onHide={closeModal} >
         <Modal.Header>

@@ -1,7 +1,6 @@
 import Application from './common/app'
 import * as allController from './common/controllers'
 import Logger from './common/utils/logger'
-import scheduleJob from './common/utils/jobs/schedule'
 
 process.on('uncaughtException', (err: Error) => {
     Logger.error('Uncaught Exception. Shutting down...')
@@ -20,8 +19,6 @@ const app = new Application({
 })
 
 const server = app.run()
-
-// scheduleJob();
 
 process.on('unhandledRejection', (err: Error) => {
     Logger.error('Unhandled Rejection. Shutting down...')

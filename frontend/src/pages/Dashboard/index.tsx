@@ -13,15 +13,31 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(dashboardActions.updateIsLoading(true));
-    axios
+    const weatherData = localStorage.getItem('hochiminh');
+    if(weatherData !== null){
+      dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
+      dispatch(dashboardActions.updateIsLoading(false));
+    }
+    else{
+      axios
       .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {})
       .then((res) => {
         dispatch(dashboardActions.updateWeather(res.data.data));
+        localStorage.setItem('hochiminh', JSON.stringify(res.data.data));
+        setTimeout(
+          () => {
+            if (localStorage.getItem('hochiminh') !== null) {
+              localStorage.removeItem('hochiminh')
+            }
+          },
+          14400000
+        );
         dispatch(dashboardActions.updateIsLoading(false));
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   }, []);
 
   return (
