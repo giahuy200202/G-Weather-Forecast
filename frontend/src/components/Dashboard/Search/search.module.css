@@ -126,6 +126,16 @@
     margin-bottom: 1rem;
 }
 
+.btn-loading {
+    padding: 0.8rem 3.4rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1.5rem;
+    background: #4263eb;
+    color: white;
+    margin-top: 0.5rem;
+}
+
 .btn-submit {
     padding: 0.9rem 2.7rem;
     border-radius: 0.5rem;

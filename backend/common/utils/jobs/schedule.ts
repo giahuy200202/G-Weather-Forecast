@@ -4,7 +4,8 @@ import path from 'path'
 
 export default async () => {
     const directory = '../backend/common/dummy_data'
-    cron.schedule('* */2 * * * *', () => {
+    //00:00 utc is 07:00 VN
+    cron.schedule('0 0 * * *', () => {
         fs.readdir(directory, (err, files) => {
             if (err) throw err;
             for (const file of files) {

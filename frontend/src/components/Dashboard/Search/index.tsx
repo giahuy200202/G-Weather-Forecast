@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { dashboardActions } from "@store/dashboard";
 import { useState } from "react";
+import BeatLoader from "react-spinners/BeatLoader";
 
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,17 +20,7 @@ const Search: React.FC = () => {
   const [location, setLocation] = useState('');
   const [email, setEmail] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
+  const isSubmitting = useAppSelector((state) => state.dashboard.isSubmitting);
 
   function openModal() {
     setIsOpen(true);
@@ -81,7 +72,7 @@ const Search: React.FC = () => {
     }
   }
   const handleSubmitModal = () => {
-    dispatch(dashboardActions.updateIsLoading(true));
+    dispatch(dashboardActions.updateIsSubmitting(true));
     axios
       .post(`${process.env.REACT_APP_API_URI}/v1/weather/subscribe`, {
         email: email,
@@ -95,7 +86,7 @@ const Search: React.FC = () => {
           closeModal();
           toast.success('You subscribed successfully', styleSuccess);
         }
-        dispatch(dashboardActions.updateIsLoading(false));
+        dispatch(dashboardActions.updateIsSubmitting(false));
       })
       .catch((err) => {
         console.log(err);
@@ -114,7 +105,7 @@ const Search: React.FC = () => {
         <p>or</p>
         <div className={styles["line"]}></div>
       </div>
-      <button className={styles["btn-current-location"]}>Use current location</button>
+      <button onClick={()=>{setSearch('ho chi minh'); handleSubmitSearch();}}className={styles["btn-current-location"]}>Use current location</button>
       <button onClick={openModal} className={`${styles["btn-current-location"]} ${styles["btn-more-margin"]}`}>Receive daily forecast via email</button>
       <Modal show={modalIsOpen} onHide={closeModal} >
         <Modal.Header>
@@ -134,7 +125,14 @@ const Search: React.FC = () => {
         <Modal.Footer>
           <div className={styles["padding-modal"]}>
             <button onClick={closeModal} className={styles["btn-cancel"]}>Cancel</button>
-            <button onClick={handleSubmitModal} className={styles["btn-submit"]}>Submit</button>
+            {isSubmitting ?
+              <button className={styles["btn-loading"]}><BeatLoader
+                color="white"
+                margin={2}
+                size={7}
+                speedMultiplier={0.5}
+              /> </button>
+              : <button onClick={handleSubmitModal} className={styles["btn-submit"]}>Submit</button>}
           </div>
         </Modal.Footer>
       </Modal>

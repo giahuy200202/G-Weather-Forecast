@@ -148,7 +148,7 @@ class WeatherController implements IController {
                 to: email,
                 subject: 'Weather Information',
                 html: `
-                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent at 6:00 a.m. every day. Wish you a great day ahead!</p> 
+                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent at 7:00 a.m. every day. Wish you a great day ahead!</p> 
                 `,
             })
 
@@ -175,20 +175,22 @@ class WeatherController implements IController {
                 imgCondition: assignWeather.day.condition.icon ?? '',
                 textCondition: assignWeather.day.condition.text ?? '',
             }
-            cron.schedule('*/60 * * * * *', () => {
-                // GMailer.sendMail({
-                //     to: email,
-                //     subject: 'Weather Information',
-                //     html: `
-                //             <h4>We would like to send you today\'s weather information</h4>
-                //             <p>Location: ${formatWeather.location}</p>
-                //             <p>Date: ${formatWeather.date}</p>
-                //             <p>Temperature: ${formatWeather.temperature}</p>
-                //             <p>Wind: ${formatWeather.wind}</p>
-                //             <p>Humidity: ${formatWeather.humidity}</p>
-                //             <p>Condition: ${formatWeather.textCondition}</p>
-                //         `,
-                // })
+
+            //00:00 utc is 07:00 VN
+            cron.schedule('0 0 * * *', () => {
+                GMailer.sendMail({
+                    to: email,
+                    subject: 'Weather Information',
+                    html: `
+                            <h4>We would like to send you today\'s weather information</h4>
+                            <p>Location: ${formatWeather.location}</p>
+                            <p>Date: ${formatWeather.date}</p>
+                            <p>Temperature: ${formatWeather.temperature}</p>
+                            <p>Wind: ${formatWeather.wind}</p>
+                            <p>Humidity: ${formatWeather.humidity}</p>
+                            <p>Condition: ${formatWeather.textCondition}</p>
+                        `,
+                })
             })
 
             return res.status(200).json({

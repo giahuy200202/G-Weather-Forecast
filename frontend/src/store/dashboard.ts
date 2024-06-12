@@ -14,6 +14,7 @@ interface InitialDashboardState {
   weather: IWeather[];
   currentWeather: IWeather;
   isLoading: Boolean;
+  isSubmitting: Boolean;
 }
 
 const initialDashboardState: InitialDashboardState = {
@@ -27,7 +28,8 @@ const initialDashboardState: InitialDashboardState = {
     imgCondition: '',
     textCondition: ''
   },
-  isLoading: false
+  isLoading: false,
+  isSubmitting: false,
 };
 
 const dashboardSlice = createSlice({
@@ -36,6 +38,9 @@ const dashboardSlice = createSlice({
   reducers: {
     updateIsLoading(state, action: PayloadAction<Boolean>){
       state.isLoading = action.payload;
+    },
+    updateIsSubmitting(state, action: PayloadAction<Boolean>){
+      state.isSubmitting = action.payload;
     },
     updateWeather(state, action: PayloadAction<IWeather[]>){
       state.weather = [...action.payload];
