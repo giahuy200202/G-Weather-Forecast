@@ -41,7 +41,6 @@ const Search: React.FC = () => {
     }
   }
   const handleSubmitSearch = (location: string) => {
-    console.log(location);
     dispatch(dashboardActions.updateIsLoading(true));
     const weatherData = localStorage.getItem(location);
     if (weatherData !== null) {
