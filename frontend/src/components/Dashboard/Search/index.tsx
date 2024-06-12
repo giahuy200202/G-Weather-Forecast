@@ -41,6 +41,7 @@ const Search: React.FC = () => {
     }
   }
   const handleSubmitSearch = (location: string) => {
+    console.log(location);
     dispatch(dashboardActions.updateIsLoading(true));
     const weatherData = localStorage.getItem(location);
     if (weatherData !== null) {
@@ -48,31 +49,37 @@ const Search: React.FC = () => {
       dispatch(dashboardActions.updateIsLoading(false));
     }
     else {
-      axios
-        .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
-          location: search
-        })
-        .then((res) => {
-          if (!res.data.success) {
-            toast.error(res.data.message, styleError);
-          }
-          else {
-            dispatch(dashboardActions.updateWeather(res.data.data));
-            localStorage.setItem(location, JSON.stringify(res.data.data));
-            setTimeout(
-              () => {
-                if (localStorage.getItem(location) !== null) {
-                  localStorage.removeItem(location)
-                }
-              },
-              14400000
-            );
-          }
-          dispatch(dashboardActions.updateIsLoading(false));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (!search || search.length === 0 || search.trim().length === 0) {
+        toast.error('Invalid search input', styleError);
+      }
+      else {
+        axios
+          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
+            location: search
+          })
+          .then((res) => {
+            if (!res.data.success) {
+              toast.error(res.data.message, styleError);
+            }
+            else {
+              dispatch(dashboardActions.updateWeather(res.data.data));
+              localStorage.setItem(location, JSON.stringify(res.data.data));
+              setTimeout(
+                () => {
+                  if (localStorage.getItem(location) !== null) {
+                    localStorage.removeItem(location)
+                  }
+                },
+                14400000
+              );
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+      }
+      dispatch(dashboardActions.updateIsLoading(false));
     }
   }
 
@@ -96,7 +103,7 @@ const Search: React.FC = () => {
   }
   const handleSubmitModal = () => {
     dispatch(dashboardActions.updateIsSubmitting(true));
-    let currentPostion:string = '';
+    let currentPostion: string = '';
     navigator.geolocation.getCurrentPosition((position) => {
       currentPostion = `${position.coords.latitude},${position.coords.longitude}`;
       axios
