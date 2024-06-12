@@ -21,7 +21,7 @@ const app = new Application({
 
 const server = app.run()
 
-scheduleJob();
+// scheduleJob();
 
 process.on('unhandledRejection', (err: Error) => {
     Logger.error('Unhandled Rejection. Shutting down...')
