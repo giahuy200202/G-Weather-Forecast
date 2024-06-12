@@ -167,3 +167,8 @@
     background: #d9e1f5;
     cursor: pointer;
 }
+
+.text-span{
+    font-size: 1.2rem;
+    font-weight: 400;
+}

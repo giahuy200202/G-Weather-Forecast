@@ -37,12 +37,12 @@ const Search: React.FC = () => {
   }
   const handleSearchKeyEnter = (event: any) => {
     if (event.key === 'Enter') {
-      handleSubmitSearch();
+      handleSubmitSearch(search);
     }
   }
-  const handleSubmitSearch = () => {
+  const handleSubmitSearch = (location: string) => {
     dispatch(dashboardActions.updateIsLoading(true));
-    const weatherData = localStorage.getItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase());
+    const weatherData = localStorage.getItem(location);
     if (weatherData !== null) {
       dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
       dispatch(dashboardActions.updateIsLoading(false));
@@ -58,11 +58,11 @@ const Search: React.FC = () => {
           }
           else {
             dispatch(dashboardActions.updateWeather(res.data.data));
-            localStorage.setItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase(), JSON.stringify(res.data.data));
+            localStorage.setItem(location, JSON.stringify(res.data.data));
             setTimeout(
               () => {
-                if (localStorage.getItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase()) !== null) {
-                  localStorage.removeItem(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase())
+                if (localStorage.getItem(location) !== null) {
+                  localStorage.removeItem(location)
                 }
               },
               14400000
@@ -74,6 +74,13 @@ const Search: React.FC = () => {
           console.log(err);
         });
     }
+  }
+
+  const handleGetCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setSearch(`${position.coords.latitude},${position.coords.longitude}`)
+      handleSubmitSearch(`${position.coords.latitude},${position.coords.longitude}`)
+    })
   }
 
   const handleLocationChange = (event: any) => {
@@ -89,24 +96,28 @@ const Search: React.FC = () => {
   }
   const handleSubmitModal = () => {
     dispatch(dashboardActions.updateIsSubmitting(true));
-    axios
-      .post(`${process.env.REACT_APP_API_URI}/v1/weather/subscribe`, {
-        email: email,
-        location: location
-      })
-      .then((res) => {
-        if (!res.data.success) {
-          toast.error(res.data.message, styleError);
-        }
-        else {
-          closeModal();
-          toast.success('You subscribed successfully', styleSuccess);
-        }
-        dispatch(dashboardActions.updateIsSubmitting(false));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let currentPostion:string = '';
+    navigator.geolocation.getCurrentPosition((position) => {
+      currentPostion = `${position.coords.latitude},${position.coords.longitude}`;
+      axios
+        .post(`${process.env.REACT_APP_API_URI}/v1/weather/subscribe`, {
+          email: email,
+          location: location === '' ? currentPostion : location
+        })
+        .then((res) => {
+          if (!res.data.success) {
+            toast.error(res.data.message, styleError);
+          }
+          else {
+            closeModal();
+            toast.success('You subscribed successfully', styleSuccess);
+          }
+          dispatch(dashboardActions.updateIsSubmitting(false));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
   }
 
   return (
@@ -115,13 +126,13 @@ const Search: React.FC = () => {
         <h2>Enter a city name</h2>
       </div>
       <input onKeyDown={handleSearchKeyEnter} onChange={handleSearchChange} type="text" placeholder="E.g., New York, London, Tokyo" />
-      <button onClick={handleSubmitSearch} className={styles["btn-search"]}>Search</button>
+      <button onClick={() => handleSubmitSearch(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase())} className={styles["btn-search"]}>Search</button>
       <div className={styles["or-container"]}>
         <div className={styles["line"]}></div>
         <p>or</p>
         <div className={styles["line"]}></div>
       </div>
-      <button onClick={() => { setSearch('ho chi minh'); handleSubmitSearch(); }} className={styles["btn-current-location"]}>Use current location</button>
+      <button onClick={handleGetCurrentLocation} className={styles["btn-current-location"]}>Use current location</button>
       <button onClick={openModal} className={`${styles["btn-current-location"]} ${styles["btn-more-margin"]}`}>Receive daily forecast via email</button>
       <Modal show={modalIsOpen} onHide={closeModal} >
         <Modal.Header>
@@ -134,7 +145,10 @@ const Search: React.FC = () => {
             <p className={styles["content-modal"]}>Please enter your information so we can send you daily weather updates that match your location and preferences</p>
             <p className={`${styles["content-modal"]} ${styles["more-vertical-space"]}`}>Email</p>
             <input className={styles["input-modal"]} onKeyDown={handleModalKeyEnter} onChange={handleEmailChange} type="text" placeholder="Enter your email" />
-            <p className={`${styles["content-modal"]} ${styles["more-vertical-space"]}`}>Location</p>
+            <p className={`${styles["content-modal"]} ${styles["more-vertical-space"]}`}>
+              Location
+              <span className={styles["text-span"]}> (Optional - If not using current location)</span>
+            </p>
             <input className={`${styles["input-modal"]} ${styles["more-vertical-input-space"]}`} onKeyDown={handleModalKeyEnter} onChange={handleLocationChange} type="text" placeholder="Enter your location" />
           </div>
         </Modal.Body>

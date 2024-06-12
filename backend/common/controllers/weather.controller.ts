@@ -23,7 +23,7 @@ class WeatherController implements IController {
         res: Response,
         next: NextFunction
     ) {
-        const location = req.body.location ?? 'ho chi minh'
+        const location = req.body.location ?? ''
         const pathname = location
             .replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '')
             .toLowerCase()
@@ -61,8 +61,6 @@ class WeatherController implements IController {
                         textCondition: weather.day.condition.text ?? '',
                     })
                 }
-
-                const json = JSON.stringify(weatherArray)
                 return res.status(200).json({
                     success: true,
                     data: weatherArray,
@@ -110,62 +108,75 @@ class WeatherController implements IController {
                 message: 'Email already exists',
             })
         } else {
-            await Information.create({
-                email: email,
-                location: location,
-            })
-
-            GMailer.sendMail({
-                to: email,
-                subject: 'Weather Information',
-                html: `
-                    <p>Thank you for subscribing to the weather forecast service. The forecast will be sent every day. Wish you a great day ahead!</p> 
-                `,
-            })
-
             const weatherURL = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.API_KEY}&q=${location}&days=1&aqi=no&alerts=no`
             const response = await fetch(weatherURL)
             const weatherData = await response.json()
-            const assignWeather = weatherData.forecast.forecastday[0]
-            const formatWeather: IWeather = {
-                location: weatherData.location.name,
-                date: assignWeather.date,
-                temperature: assignWeather.day.maxtemp_c
-                    ? assignWeather.day.maxtemp_c.toString()
-                    : '',
-                wind: assignWeather.day.maxwind_kph
-                    ? (
-                          Math.floor(
-                              (assignWeather.day.maxwind_kph / 3.6) * 100
-                          ) / 100
-                      ).toString()
-                    : '',
-                humidity: assignWeather.day.avghumidity
-                    ? assignWeather.day.avghumidity.toString()
-                    : '',
-                imgCondition: assignWeather.day.condition.icon ?? '',
-                textCondition: assignWeather.day.condition.text ?? '',
-            }
+            if ('error' in weatherData) {
+                return res.status(200).json({
+                    success: false,
+                    message: weatherData.error.message,
+                })
+            } else {
+                await Information.create({
+                    email: email,
+                    location: location,
+                })
+                const assignWeather = weatherData.forecast.forecastday[0]
+                const formatWeather: IWeather = {
+                    location: weatherData.location.name,
+                    date: assignWeather.date,
+                    temperature: assignWeather.day.maxtemp_c
+                        ? assignWeather.day.maxtemp_c.toString()
+                        : '',
+                    wind: assignWeather.day.maxwind_kph
+                        ? (
+                              Math.floor(
+                                  (assignWeather.day.maxwind_kph / 3.6) * 100
+                              ) / 100
+                          ).toString()
+                        : '',
+                    humidity: assignWeather.day.avghumidity
+                        ? assignWeather.day.avghumidity.toString()
+                        : '',
+                    imgCondition: assignWeather.day.condition.icon ?? '',
+                    textCondition: assignWeather.day.condition.text ?? '',
+                }
 
-            cron.schedule('0 0 * * *', () => {
                 GMailer.sendMail({
                     to: email,
                     subject: 'Weather Information',
                     html: `
-                            <h4>We would like to send you today\'s weather information</h4>
-                            <p>Location: ${formatWeather.location}</p>
-                            <p>Date: ${formatWeather.date}</p>
-                            <p>Temperature: ${formatWeather.temperature}</p>
-                            <p>Wind: ${formatWeather.wind}</p>
-                            <p>Humidity: ${formatWeather.humidity}</p>
-                            <p>Condition: ${formatWeather.textCondition}</p>
-                        `,
+                        <p>Thank you for subscribing to the weather forecast service. The forecast will be sent every day. Wish you a great day ahead!</p>
+                        <h4>Today\'s weather information</h4>
+                        <p>Location: ${formatWeather.location}</p>
+                        <p>Date: ${formatWeather.date}</p>
+                        <p>Temperature: ${formatWeather.temperature}</p>
+                        <p>Wind: ${formatWeather.wind}</p>
+                        <p>Humidity: ${formatWeather.humidity}</p>
+                        <p>Condition: ${formatWeather.textCondition}</p>
+                    `,
                 })
-            })
 
-            return res.status(200).json({
-                success: true,
-            })
+                cron.schedule('0 0 * * *', () => {
+                    GMailer.sendMail({
+                        to: email,
+                        subject: 'Weather Information',
+                        html: `
+                                <h4>We would like to send you today\'s weather information</h4>
+                                <p>Location: ${formatWeather.location}</p>
+                                <p>Date: ${formatWeather.date}</p>
+                                <p>Temperature: ${formatWeather.temperature}</p>
+                                <p>Wind: ${formatWeather.wind}</p>
+                                <p>Humidity: ${formatWeather.humidity}</p>
+                                <p>Condition: ${formatWeather.textCondition}</p>
+                            `,
+                    })
+                })
+
+                return res.status(200).json({
+                    success: true,
+                })
+            }
         }
     }
 }
