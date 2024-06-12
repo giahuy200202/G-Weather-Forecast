@@ -40,7 +40,7 @@ The website delivers accurate forecasts personalized for your location. Simple t
 
 ## DEPLOYMENT LINKS
 
-- Frontend: https://g-weather-forecast-4jmc2ushl-giahuy200202s-projects.vercel.app/
+- Frontend: g-weather-forecast-1o0sgvn3l-giahuy200202s-projects.vercel.app
 - Backend: https://g-weather-forecast-ab2u.onrender.com
 
 **Please click "Allow" to access your location**
