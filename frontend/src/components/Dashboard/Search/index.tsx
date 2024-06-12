@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./search.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/ReduxHooks";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 import { dashboardActions } from "@store/dashboard";

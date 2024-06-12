@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./result.module.css";
-import { useAppDispatch, useAppSelector } from "../../../hooks/ReduxHooks";
+import { useAppSelector } from "../../../hooks/ReduxHooks";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import BeatLoader from "react-spinners/BeatLoader";

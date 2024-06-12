@@ -30,24 +30,24 @@ class WeatherController implements IController {
             .replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '')
             .toLowerCase()
 
-        if (fs.existsSync(`../backend/common/dummy_data/${pathname}.json`)) {
-            fs.readFile(
-                `../backend/common/dummy_data/${pathname}.json`,
-                'utf8',
-                (err, data) => {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        const weatherData = JSON.parse(data) //now it an object
-                        return res.status(200).json({
-                            success: true,
-                            data: weatherData,
-                        })
-                    }
-                }
-            )
+        // if (fs.existsSync(`../backend/common/dummy_data/${pathname}.json`)) {
+        //     fs.readFile(
+        //         `../backend/common/dummy_data/${pathname}.json`,
+        //         'utf8',
+        //         (err, data) => {
+        //             if (err) {
+        //                 console.log(err)
+        //             } else {
+        //                 const weatherData = JSON.parse(data) //now it an object
+        //                 return res.status(200).json({
+        //                     success: true,
+        //                     data: weatherData,
+        //                 })
+        //             }
+        //         }
+        //     )
 
-        } else {
+        // } else {
             const weatherURL = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.API_KEY}&q=${location}&days=14&aqi=no&alerts=no`
             try {
                 const response = await fetch(weatherURL)
@@ -84,23 +84,27 @@ class WeatherController implements IController {
                     }
     
                     const json = JSON.stringify(weatherArray)
-                    fs.writeFile(
-                        `../backend/common/dummy_data/${pathname}.json`,
-                        json,
-                        'utf8',
-                        () => {
-                            return res.status(200).json({
-                                success: true,
-                                data: weatherArray,
-                            })
-                        }
-                    )
+                    // fs.writeFile(
+                    //     `../backend/common/dummy_data/${pathname}.json`,
+                    //     json,
+                    //     'utf8',
+                    //     () => {
+                    //         return res.status(200).json({
+                    //             success: true,
+                    //             data: weatherArray,
+                    //         })
+                    //     }
+                    // )
+                    return res.status(200).json({
+                        success: true,
+                        data: weatherArray,
+                    })
                 }
             } catch (error) {
                 console.log('Error fetching weather data:', error)
                 throw error
             }
-        }
+        // }
     }
 
     private async subcribeWeather(
