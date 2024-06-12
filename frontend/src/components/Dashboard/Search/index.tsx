@@ -50,6 +50,7 @@ const Search: React.FC = () => {
     else {
       if (!search || search.length === 0 || search.trim().length === 0) {
         toast.error('Invalid search input', styleError);
+        dispatch(dashboardActions.updateIsLoading(false));
       }
       else {
         axios
@@ -63,6 +64,7 @@ const Search: React.FC = () => {
             else {
               dispatch(dashboardActions.updateWeather(res.data.data));
               localStorage.setItem(location, JSON.stringify(res.data.data));
+              dispatch(dashboardActions.updateIsLoading(false));
               setTimeout(
                 () => {
                   if (localStorage.getItem(location) !== null) {
@@ -78,7 +80,7 @@ const Search: React.FC = () => {
           });
 
       }
-      dispatch(dashboardActions.updateIsLoading(false));
+     
     }
   }
 
