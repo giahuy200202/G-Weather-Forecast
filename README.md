@@ -38,7 +38,17 @@ The website delivers accurate forecasts personalized for your location. Simple t
 
 - MongoDB
 
-## INSTRUCTIONS
+## DEPLOYMENT LINKS
+
+- Frontend: https://g-weather-forecast-27w2vw7rz-giahuy200202s-projects.vercel.app/
+- Backend: https://g-weather-forecast-ab2u.onrender.com
+
+**Please click "Allow" to access your location**
+
+![image](https://github.com/giahuy200202/G-Weather-Forecast/assets/74665412/6cf24c14-a9ab-4979-b75a-e89a9717d734)
+
+
+## LOCAL INSTALLATIONS
 
 First, to build a project you need to install **node** and **react** .
 
@@ -64,6 +74,10 @@ Step 3: Run react app**
 ```console
 npm start
 ```
+
+Step 4: Click **Allow** to access your location
+
+![image](https://github.com/giahuy200202/G-Weather-Forecast/assets/74665412/6cf24c14-a9ab-4979-b75a-e89a9717d734)
 
 ### Backend
 
