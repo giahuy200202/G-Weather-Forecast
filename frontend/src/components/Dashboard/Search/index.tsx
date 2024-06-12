@@ -37,7 +37,7 @@ const Search: React.FC = () => {
   }
   const handleSearchKeyEnter = (event: any) => {
     if (event.key === 'Enter') {
-      handleSubmitSearch(search);
+      handleSubmitSearch(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase());
     }
   }
   const handleSubmitSearch = (location: string) => {
