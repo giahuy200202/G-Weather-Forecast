@@ -27,21 +27,22 @@ The website delivers accurate forecasts personalized for your location. Simple t
 - Redux Toolkit
 - CSS, Bootstrap (for Modal)
 - Noderon (for schedule task)
+- React Multi Carousel (for slide animation)
 
 ### Backend
 
-> - Node Typescript
-> - OOP Design pattern
+- Node Typescript
+- OOP Design pattern
 
 ### Database
 
-> - MongoDB
+- MongoDB
 
 ## INSTRUCTIONS
 
-> First, to build a project you need to install **nodejs** and **reactjs** .
+First, to build a project you need to install **node** and **react** .
 
-> Second, clone the project and make sure that you are in root folder.
+Second, clone the project and make sure that you are in root folder.
 
 
 ### Frontend
@@ -75,24 +76,26 @@ cd backend
 Step 2: Install all packages and dependencies of each service**
 
 ```console
-npm i
+npm ci
 ```
 
 Step 3: Run node app**
 
 ```console
-npm start
+npm run start:dev
 
 ```
 ## DEMO
-> - Onedrive: https://ynh33-my.sharepoint.com/:f:/g/personal/giahuy200202_ynh33_onmicrosoft_com/EigEzza3g49Aiq9or04v5LUBZ5Mzcb93jtmSdjwomKGVUg?e=umgdwC
+
+- Onedrive: https://ynh33-my.sharepoint.com/:f:/g/personal/giahuy200202_ynh33_onmicrosoft_com/EigEzza3g49Aiq9or04v5LUBZ5Mzcb93jtmSdjwomKGVUg?e=umgdwC
 
 ## REFERENCES
 
-### I learned ReactJS and NodeJS from Udemy
-
-> - ReactJS: https://www.udemy.com/course/react-the-complete-guide-incl-redux/
-> - NodeJS (Express): https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/
+- ReactJS: https://www.udemy.com/course/react-the-complete-guide-incl-redux/
+- NodeJS (Express): https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/
+- Typescript: https://www.udemy.com/course/understanding-typescript/?couponCode=ST21MT61124
+- OOP Desgin pattern: https://refactoring.guru/
+- Weather API: https://www.weatherapi.com/docs/
 
 
 
