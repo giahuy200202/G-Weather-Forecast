@@ -37,12 +37,14 @@ const Search: React.FC = () => {
   }
   const handleSearchKeyEnter = (event: any) => {
     if (event.key === 'Enter') {
-      handleSubmitSearch(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase());
+      handleSubmitSearch();
     }
   }
-  const handleSubmitSearch = (location: string) => {
+  const handleSubmitSearch = () => {
+
     dispatch(dashboardActions.updateIsLoading(true));
-    const weatherData = localStorage.getItem(location);
+    const locationParam = search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase()
+    const weatherData = localStorage.getItem(locationParam);
     if (weatherData !== null) {
       dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
       dispatch(dashboardActions.updateIsLoading(false));
@@ -63,12 +65,12 @@ const Search: React.FC = () => {
             }
             else {
               dispatch(dashboardActions.updateWeather(res.data.data));
-              localStorage.setItem(location, JSON.stringify(res.data.data));
+              localStorage.setItem(locationParam, JSON.stringify(res.data.data));
               dispatch(dashboardActions.updateIsLoading(false));
               setTimeout(
                 () => {
-                  if (localStorage.getItem(location) !== null) {
-                    localStorage.removeItem(location)
+                  if (localStorage.getItem(locationParam) !== null) {
+                    localStorage.removeItem(locationParam)
                   }
                 },
                 14400000
@@ -80,15 +82,48 @@ const Search: React.FC = () => {
           });
 
       }
-     
+
     }
   }
 
   const handleGetCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      setSearch(`${position.coords.latitude},${position.coords.longitude}`)
-      handleSubmitSearch(`${position.coords.latitude},${position.coords.longitude}`)
+      dispatch(dashboardActions.updateIsLoading(true));
+      const currentLocation = `${position.coords.latitude},${position.coords.longitude}`
+      const weatherData = localStorage.getItem(currentLocation);
+      if (weatherData !== null) {
+        dispatch(dashboardActions.updateWeather(JSON.parse(weatherData)));
+        dispatch(dashboardActions.updateIsLoading(false));
+      }
+      else {
+        axios
+          .post(`${process.env.REACT_APP_API_URI}/v1/weather/current`, {
+            location: currentLocation
+          })
+          .then((res) => {
+            if (!res.data.success) {
+              toast.error(res.data.message, styleError);
+            }
+            else {
+              dispatch(dashboardActions.updateWeather(res.data.data));
+              localStorage.setItem(currentLocation, JSON.stringify(res.data.data));
+              dispatch(dashboardActions.updateIsLoading(false));
+              setTimeout(
+                () => {
+                  if (localStorage.getItem(currentLocation) !== null) {
+                    localStorage.removeItem(currentLocation)
+                  }
+                },
+                14400000
+              );
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     })
+
   }
 
   const handleLocationChange = (event: any) => {
@@ -134,7 +169,7 @@ const Search: React.FC = () => {
         <h2>Enter a city name</h2>
       </div>
       <input onKeyDown={handleSearchKeyEnter} onChange={handleSearchChange} type="text" placeholder="E.g., New York, London, Tokyo" />
-      <button onClick={() => handleSubmitSearch(search.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, '').toLowerCase())} className={styles["btn-search"]}>Search</button>
+      <button onClick={handleSubmitSearch} className={styles["btn-search"]}>Search</button>
       <div className={styles["or-container"]}>
         <div className={styles["line"]}></div>
         <p>or</p>
