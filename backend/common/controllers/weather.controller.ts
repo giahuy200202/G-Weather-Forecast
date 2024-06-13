@@ -157,7 +157,7 @@ class WeatherController implements IController {
                     `,
                 })
 
-                cron.schedule('0 0 * * *', () => {
+                cron.schedule('*/43200 * * * * *', () => {
                     GMailer.sendMail({
                         to: email,
                         subject: 'Weather Information',
