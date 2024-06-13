@@ -40,6 +40,8 @@ The website delivers accurate forecasts personalized for your location. Simple t
 
 ## DEPLOYMENT LINKS
 
+Because the server is free, it may take a while to load data the first time
+
 - Frontend: https://g-weather-forecast-7l5flgyej-giahuy200202s-projects.vercel.app/
 - Backend: https://g-weather-forecast-ab2u.onrender.com
 
