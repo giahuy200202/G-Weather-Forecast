@@ -59,19 +59,19 @@ Second, clone the project and make sure that you are in root folder.
 
 ### Frontend
 
-Step 1: Change directory to frontend directory**
+Step 1: Change directory to frontend directory
 
 ```console
 cd frontend
 ```
 
-Step 2: Install all packages and dependencies of each service**
+Step 2: Install all packages and dependencies of each service
 
 ```console
 npm i
 ```
 
-Step 3: Run react app**
+Step 3: Run react app
 
 ```console
 npm start
@@ -83,19 +83,19 @@ Step 4: Click **Allow** to access your location
 
 ### Backend
 
-Step 1: Change directory to backend directory**
+Step 1: Change directory to backend directory
 
 ```console
 cd backend
 ```
 
-Step 2: Install all packages and dependencies of each service**
+Step 2: Install all packages and dependencies of each service
 
 ```console
 npm ci
 ```
 
-Step 3: Run node app**
+Step 3: Run node app
 
 ```console
 npm run start:dev
