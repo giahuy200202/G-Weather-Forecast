@@ -113,6 +113,11 @@ npm run start:dev
 - OOP Desgin pattern: https://refactoring.guru/
 - Weather API: https://www.weatherapi.com/docs/
 
+## IQ TEST
+
+![image](https://github.com/giahuy200202/G-Weather-Forecast/assets/74665412/06ca6fe5-d399-4eb2-a72e-1567fb59e17d)
+
+
 
 
 
